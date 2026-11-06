@@ -1,22 +1,677 @@
-<canvas id="ctx" width="750" height="500" style="border:5px solid #000000;"></canvas> 
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Number Farm</title>
+        <!-- Local Stylesheet -->
+        <link rel="stylesheet" href="numberfarm.css">
+        <!-- Google Fonts for Patrick Hand and Fredoka -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Fredoka&family=Patrick+Hand&display=swap" rel="stylesheet">
+    </head>
+
+    <body style="background-color: #f3dbdb">
+
+        <div class="top-display">
+
+            <h1 class="shop-display" style="color: rgb(158, 137, 139); -webkit-text-stroke: 0.5px rgb(71, 44, 33); text-shadow: 0 1px 0 rgb(71, 44, 33); background-color: rgb(201, 185, 187); border: 2px solid rgb(158, 137, 139);">Cash : <span id="cash"></span></h1>
+
+        </div>
 
 
-<script>
-    //Initialization
-        //Variables
 
-        let money = 0;
-        let seed1owned = 1;
-        let seed1price = Math.floor(Math.random() * 3) + 3;
-        let seed2owned = 0;
-        let seed2price = Math.floor(Math.random() * 3) + 5;      
-        let seed3owned = 0;
-        let seed3price = Math.floor(Math.random() * 5) + 10;
+        <div class="page-layout">
+            <div class="farm-area">
+                <div class="canvas-container">
+                    <div class="plot-slot">
+                        <canvas id="plot1" width="100" height="150" style="border:5px solid #4e423f; border-radius: 6px;"></canvas>
+                        <button id="harvestPlot1" onclick="clearPlot('plot1')" class="shop-display" disabled style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Harvest</button>
+                    </div>
+                    <div class="plot-slot">
+                        <canvas id="plot2" width="100" height="150" style="border:5px solid #4e423f; border-radius: 6px;"></canvas>
+                        <button id="harvestPlot2" onclick="clearPlot('plot2')" class="shop-display" disabled style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Harvest</button>
+                    </div>
+                    <div class="plot-slot">
+                        <canvas id="plot3" width="100" height="150" style="border:5px solid #4e423f; border-radius: 6px;"></canvas>
+                        <button id="harvestPlot3" onclick="clearPlot('plot3')" class="shop-display" disabled style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Harvest</button>
+                    </div>
+                </div>
+
+                <br />
+
+                <div class="canvas-container">
+                    <div class="plot-slot">
+                        <canvas id="plot4" width="100" height="150" style="border:5px solid #4e423f; border-radius: 6px;"></canvas>
+                        <button id="harvestPlot4" onclick="clearPlot('plot4')" class="shop-display" disabled style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Harvest</button>
+                    </div>
+                    <div class="plot-slot">
+                        <canvas id="plot5" width="100" height="150" style="border:5px solid #4e423f; border-radius: 6px;"></canvas>
+                        <button id="harvestPlot5" onclick="clearPlot('plot5')" class="shop-display" disabled style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Harvest</button>
+                    </div>
+                    <div class="plot-slot">
+                        <canvas id="plot6" width="100" height="150" style="border:5px solid #4e423f; border-radius: 6px;"></canvas>
+                        <button id="harvestPlot6" onclick="clearPlot('plot6')" class="shop-display" disabled style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Harvest</button>
+                    </div>
+                </div>
+            </div>
+
+        <div class="inventory-and-prices">
+        <div class="inventory-panel" style="width:455px; height:300px; background-color:rgb(144, 102, 85); border:5px solid rgb(112, 69, 52); padding:10px; margin:10px; border-radius: 10px; box-shadow: 5px 4px 8px rgba(0, 0, 0, 0.5);">
+
+            <h2  class="shop-display" style="color: rgb(158, 137, 139); -webkit-text-stroke: 0.5px rgb(71, 44, 33); text-shadow: 0 1px 0 rgb(71, 44, 33); background-color: rgb(201, 185, 187); border: 2px solid rgb(158, 137, 139);">Seed Inventory</h2>
+
+
+            <div class="canvas-container">
+                <canvas id="inventory1" width="50" height="50" style="border:5px solid #4e423f; border-radius: 6px;"></canvas>
+                <canvas id="inventory2" width="50" height="50" style="border:5px solid #4e423f; border-radius: 6px;"></canvas>
+                <canvas id="inventory3" width="50" height="50" style="border:5px solid #4e423f; border-radius: 6px;"></canvas>
+                <canvas id="inventory4" width="50" height="50" style="border:5px solid #4e423f; border-radius: 6px;"></canvas>
+                <canvas id="inventory5" width="50" height="50" style="border:5px solid #4e423f; border-radius: 6px;"></canvas>
+                <canvas id="inventory6" width="50" height="50" style="border:5px solid #4e423f; border-radius: 6px;"></canvas>
+            </div>
+            
+            <h2  class="shop-display" style="color: rgb(158, 137, 139); -webkit-text-stroke: 0.5px rgb(71, 44, 33); text-shadow: 0 1px 0 rgb(71, 44, 33); background-color: rgb(201, 185, 187); border: 2px solid rgb(158, 137, 139);">Grown Plants</h2>
+            
+            <div class="canvas-container">
+                <canvas id="grownInventory1" width="50" height="50" style="border:5px solid #4e423f; border-radius: 6px;"></canvas>
+                <canvas id="grownInventory2" width="50" height="50" style="border:5px solid #4e423f; border-radius: 6px;"></canvas>
+                <canvas id="grownInventory3" width="50" height="50" style="border:5px solid #4e423f; border-radius: 6px;"></canvas>
+                <canvas id="grownInventory4" width="50" height="50" style="border:5px solid #4e423f; border-radius: 6px;"></canvas>
+                <canvas id="grownInventory5" width="50" height="50" style="border:5px solid #4e423f; border-radius: 6px;"></canvas>
+                <canvas id="grownInventory6" width="50" height="50" style="border:5px solid #4e423f; border-radius: 6px;"></canvas>
+            </div>
+
+
+        </div>
+        <div class="price-panels">
+            <div class="sell-prices-container">
+                <h2 class="shop-display sell-prices-heading" style="color: rgb(158, 137, 139); -webkit-text-stroke: 1px rgb(71, 44, 33); text-shadow: 0 1px 0 rgb(71, 44, 33); background-color: rgb(201, 185, 187); border: 2px solid rgb(158, 137, 139); font-size: 22.5px; padding-top: 10px; padding-bottom: 10px;">Sell Prices</h2>
+                <div class="scroll-window sell-prices-window" style="background-color: #f5f2eb; padding: 20px; border-radius: 12px; font-family: 'Patrick Hand', cursive, sans-serif; max-width: 300px;">
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div style="background: #ffffff; padding: 12px 16px; border-radius: 8px; box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.5); display: flex; justify-content: space-between; align-items: center; font-weight: bold;"><span>1's : $<span id="seed1price"></span></span></div>
+                        <div style="background: #ffffff; padding: 12px 16px; border-radius: 8px; box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.5); display: flex; justify-content: space-between; align-items: center; font-weight: bold;"><span>2's : $<span id="seed2price"></span></span></div>
+                        <div style="background: #ffffff; padding: 12px 16px; border-radius: 8px; box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.5); display: flex; justify-content: space-between; align-items: center; font-weight: bold;"><span>3's : $<span id="seed3price"></span></span></div>
+                        <div style="background: #ffffff; padding: 12px 16px; border-radius: 8px; box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.5); display: flex; justify-content: space-between; align-items: center; font-weight: bold;"><span>4's : $<span id="seed4price"></span></span></div>
+                        <div style="background: #ffffff; padding: 12px 16px; border-radius: 8px; box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.5); display: flex; justify-content: space-between; align-items: center; font-weight: bold;"><span>5's : $<span id="seed5price"></span></span></div>
+                        <div style="background: #ffffff; padding: 12px 16px; border-radius: 8px; box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.5); display: flex; justify-content: space-between; align-items: center; font-weight: bold;"><span>6's : $<span id="seed6price"></span></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="buy-prices-container">
+                <h2 class="shop-display buy-prices-heading" style="color: rgb(158, 137, 139); -webkit-text-stroke: 1px rgb(71, 44, 33); text-shadow: 0 1px 0 rgb(71, 44, 33); background-color: rgb(201, 185, 187); border: 2px solid rgb(158, 137, 139); font-size: 22.5px; padding-top: 10px; padding-bottom: 10px;">Buy Prices</h2>
+                <div class="scroll-window buy-prices-window" style="background-color: #f5f2eb; padding: 20px; border-radius: 12px; font-family: 'Patrick Hand', cursive, sans-serif; max-width: 300px;">
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div style="background: #ffffff; padding: 12px 16px; border-radius: 8px; box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.5); display: flex; justify-content: space-between; align-items: center; font-weight: bold;"><span>1's : $<span id="seed1buyprice"></span></span></div>
+                        <div style="background: #ffffff; padding: 12px 16px; border-radius: 8px; box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.5); display: flex; justify-content: space-between; align-items: center; font-weight: bold;"><span>2's : $<span id="seed2buyprice"></span></span></div>
+                        <div style="background: #ffffff; padding: 12px 16px; border-radius: 8px; box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.5); display: flex; justify-content: space-between; align-items: center; font-weight: bold;"><span>3's : $<span id="seed3buyprice"></span></span></div>
+                        <div style="background: #ffffff; padding: 12px 16px; border-radius: 8px; box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.5); display: flex; justify-content: space-between; align-items: center; font-weight: bold;"><span>4's : $<span id="seed4buyprice"></span></span></div>
+                        <div style="background: #ffffff; padding: 12px 16px; border-radius: 8px; box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.5); display: flex; justify-content: space-between; align-items: center; font-weight: bold;"><span>5's : $<span id="seed5buyprice"></span></span></div>
+                        <div style="background: #ffffff; padding: 12px 16px; border-radius: 8px; box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.5); display: flex; justify-content: space-between; align-items: center; font-weight: bold;"><span>6's : $<span id="seed6buyprice"></span></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+
+        <div class="shop-area" style="width:650px; height:200px; background-color:rgb(144, 102, 85); border:5px solid rgb(112, 69, 52); padding:10px; margin:10px; border-radius: 10px; box-shadow: 5px 4px 8px rgba(0, 0, 0, 0.5);">
+            <div class="shop-section">
+                <h2 class="shop-display" style="color: rgb(158, 137, 139); -webkit-text-stroke: 0.5px rgb(71, 44, 33); text-shadow: 0 1px 0 rgb(71, 44, 33); background-color: rgb(201, 185, 187); border: 2px solid rgb(158, 137, 139);">Seed Shop</h2>
+
+                <div>
+                    <button onclick="buySeed1()" class="shop-display" style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Seed 1</button>
+                    <button onclick="buySeed2()" class="shop-display" style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Seed 2</button>
+                    <button onclick="buySeed3()" class="shop-display" style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Seed 3</button>
+                    <button onclick="buySeed4()" class="shop-display" style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Seed 4</button>
+                    <button onclick="buySeed5()" class="shop-display" style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Seed 5</button>
+                    <button onclick="buySeed6()" class="shop-display" style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Seed 6</button>
+                </div>
+            </div>
+
+            <div class="shop-section">
+                <h2 class="shop-display" style="color: rgb(158, 137, 139); -webkit-text-stroke: 0.5px rgb(71, 44, 33); text-shadow: 0 1px 0 rgb(71, 44, 33); background-color: rgb(201, 185, 187); border: 2px solid rgb(158, 137, 139);">Sell Shop</h2>
+
+                <div>
+                    <button onclick="sellAll()" class="shop-display" style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Sell All</button>
+                    <button onclick="sellseed1()" class="shop-display" style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Sell 1s</button>
+                    <button onclick="sellseed2()" class="shop-display" style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Sell 2s</button>
+                    <button onclick="sellseed3()" class="shop-display" style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Sell 3s</button>
+                    <button onclick="sellseed4()" class="shop-display" style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Sell 4s</button>
+                    <button onclick="sellseed5()" class="shop-display" style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Sell 5s</button>
+                    <button onclick="sellseed6()" class="shop-display" style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Sell 6s</button>
+                </div>
+            </div>
+
+            <div class="shop-section">
+                <h2 class="shop-display" style="color: rgb(158, 137, 139); -webkit-text-stroke: 0.5px rgb(71, 44, 33); text-shadow: 0 1px 0 rgb(71, 44, 33); background-color: rgb(201, 185, 187); border: 2px solid rgb(158, 137, 139);"> Upgrade Shop</h2>
+
+                <div>
+                    <button onclick="buyPlot2()" class="shop-display" style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Buy Plot 2</button>
+                    <button onclick="buyPlot3()" class="shop-display" style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Buy Plot 3</button>
+                    <button onclick="buyPlot4()" class="shop-display" style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Buy Plot 4</button>
+                    <button onclick="buyPlot5()" class="shop-display" style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Buy Plot 5</button>
+                    <button onclick="buyPlot6()" class="shop-display" style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Buy Plot 6</button>
+                </div>
+            </div>
+        </div>
 
 
 
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <button onclick="openSuggestionEmail()" class="shop-display" style="color: rgb(79, 126, 133); -webkit-text-stroke: 0.5px rgb(79, 126, 133); text-shadow: 0 1px 0 rgb(112, 148, 166); background-color: rgb(214, 237, 228); border: 2px solid rgb(112, 148, 166);">Suggestions</button>
+        <script>
+            let cash = 1;
+            let suggestionRewardClaimed = false;
+            let seedSelected = 1;
+            let sellMult = 1;
+
+            function openSuggestionEmail() {
+                if (!suggestionRewardClaimed) {
+                    cash += 100;
+                    suggestionRewardClaimed = true;
+                    updatePriceDisplay();
+                }
+
+                window.location.href = 'mailto:kruger.john1@icloud.com';
+            }
+
+            let seedPrices = { 1: 3, 2: 5, 3: 10, 4: 15, 5: 35, 6: 50 };
+            let seedBuyPrices = { 1: 1, 2: 3, 3: 6, 4: 10, 5: 22, 6: 47 };
+
+            let plotUnlocked = { plot1: 1, plot2: 0, plot3: 0, plot4: 0, plot5: 0, plot6: 0 };
+            let plotFilled = { plot1: 0, plot2: 0, plot3: 0, plot4: 0, plot5: 0, plot6: 0 };
+            let plot1Mature = 0;
+            let plot2Mature = 0;
+            let plot3Mature = 0;
+            let plot4Mature = 0;
+            let plot5Mature = 0;
+            let plot6Mature = 0;
+
+            const seedGrowthTimes = { 1: 15, 2: 30, 3: 60, 4: 150, 5: 300, 6: 600 };
+            const plotGrowthSteps = { plot1: 0, plot2: 0, plot3: 0, plot4: 0, plot5: 0, plot6: 0 };
+            const plotGrowthAnimations = { plot1: null, plot2: null, plot3: null, plot4: null, plot5: null, plot6: null };
+
+            let seedOwned = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
+
+            let grownItems = {
+                1: 0, 
+                2: 0,
+                3: 0,
+                4: 0,
+                5: 0,
+                6: 0
+            };
+
+
+            //Functions to sell each seed
+            function sellseed1() {   
+
+                cash = (grownItems[1] * seedPrices[1]) + cash;
+                grownItems[1] = 0;
+                inventoryUpdate();
+
+            }
+
+            function sellseed2() {    
+
+                cash = (grownItems[2] * seedPrices[2]) + cash;
+                grownItems[2] = 0;
+                inventoryUpdate();
+
+            }
+
+            function sellseed3() {      
+
+                cash = (grownItems[3] * seedPrices[3]) + cash;
+                grownItems[3] = 0;
+                inventoryUpdate();
+
+            }
+
+            function sellseed4() {     
+
+                cash = (grownItems[4] * seedPrices[4]) + cash;
+                grownItems[4] = 0;
+                inventoryUpdate();
+
+            }
+
+            function sellseed5() {        
+
+                cash = (grownItems[5] * seedPrices[5]) + cash;
+                grownItems[5] = 0;
+                inventoryUpdate();
+
+            }
+
+            function sellseed6() {            
+                cash = (grownItems[6] * seedPrices[6]) + cash;
+                grownItems[6] = 0;
+                inventoryUpdate();
+
+            }
+
+            //Functions to buy seeds
+            function buySeed1() {
+                if (cash >= seedBuyPrices[1]) {
+                    cash -= seedBuyPrices[1];
+                    seedOwned[1] += 1;
+                    
+                }
+
+            }
+
+            function buySeed2() {
+                if (cash >= seedBuyPrices[2]) {
+                    cash -= seedBuyPrices[2];
+                    seedOwned[2] += 1;
+
+                }
+
+            }
+
+            function buySeed3() {
+                if (cash >= seedBuyPrices[3]) {
+                    cash -= seedBuyPrices[3];
+                    seedOwned[3] += 1;
+
+                }
+
+            }
+
+            function buySeed4() {
+                if (cash >= seedBuyPrices[4]) {
+                    cash -= seedBuyPrices[4];
+                    seedOwned[4] += 1;
+
+                }
+
+            }
+
+            function buySeed5() {
+                if (cash >= seedBuyPrices[5]) {
+                    cash -= seedBuyPrices[5];
+                    seedOwned[5] += 1;
+
+                }
+
+            }
+
+            function buySeed6() {
+                if (cash >= seedBuyPrices[6]) {
+                    cash -= seedBuyPrices[6];
+                    seedOwned[6] += 1;
+
+                }
+
+            }
+
+
+            //Buy new plots
+            function buyPlot2() {
+                if (cash >= 25) {
+                    cash -= 25;           // Deduct the cost of the plot from cash
+                    plotUnlocked["plot2"] = 1; // Use "plot2" as a string literal key
+                    renderAllPlots();     // Refresh the UI
+                }
+            }
+
+            function buyPlot3() {
+                if (cash >= 37) {
+                    cash -= 37;           // Deduct the cost of the plot from cash
+                    plotUnlocked["plot3"] = 1; // Use "plot2" as a string literal key
+                    renderAllPlots();     // Refresh the UI
+                }
+            }
+
+            function buyPlot4() {
+                if (cash >=50) {
+                    cash -= 50;           // Deduct the cost of the plot from cash
+                    plotUnlocked["plot4"] = 1; // Use "plot2" as a string literal key
+                    renderAllPlots();     // Refresh the UI
+                }
+            }
+
+            function buyPlot5() {
+                if (cash >= 75) {
+                    cash -= 75;           // Deduct the cost of the plot from cash
+                    plotUnlocked["plot5"] = 1; // Use "plot2" as a string literal key
+                    renderAllPlots();     // Refresh the UI
+                }
+            }
+
+            function buyPlot6() {
+                if (cash >= 125) {
+                    cash -= 125;           // Deduct the cost of the plot from cash
+                    plotUnlocked["plot6"] = 1; // Use "plot2" as a string literal key
+                    renderAllPlots();     // Refresh the UI
+                }
+            }
+
+
+            // Sells all inevntory items            
+            function sellAll() {
+                
+                let totalEarned = (
+                    (grownItems[1] * seedPrices[1]) +
+                    (grownItems[2] * seedPrices[2]) +
+                    (grownItems[3] * seedPrices[3]) +
+                    (grownItems[4] * seedPrices[4]) +
+                    (grownItems[5] * seedPrices[5]) +
+                    (grownItems[6] * seedPrices[6])
+                ) * sellMult;
+    
+                cash += totalEarned;
+                grownItems = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 }; // Reset grown inventory after selling
+                inventoryUpdate();
+
+                updatePriceDisplay();
+            }
+
+            //Updates all displays
+            function updatePriceDisplay() {
+                document.getElementById("seed1price").textContent = seedPrices[1];
+                document.getElementById("seed2price").textContent = seedPrices[2];
+                document.getElementById("seed3price").textContent = seedPrices[3];
+                document.getElementById("seed4price").textContent = seedPrices[4];
+                document.getElementById("seed5price").textContent = seedPrices[5];
+                document.getElementById("seed6price").textContent = seedPrices[6];
+                document.getElementById("cash").textContent = cash;
+                document.getElementById("seed1buyprice").textContent = seedBuyPrices[1];
+                document.getElementById("seed2buyprice").textContent = seedBuyPrices[2];
+                document.getElementById("seed3buyprice").textContent = seedBuyPrices[3];
+                document.getElementById("seed4buyprice").textContent = seedBuyPrices[4];
+                document.getElementById("seed5buyprice").textContent = seedBuyPrices[5];
+                document.getElementById("seed6buyprice").textContent = seedBuyPrices[6];
+
+            }
+
+            //Makes the harvest button only works when the plants in the pot is mature
+            function setPlotMature(canvasId, value) {
+                if (canvasId === 'plot1') plot1Mature = value;
+                if (canvasId === 'plot2') plot2Mature = value;
+                if (canvasId === 'plot3') plot3Mature = value;
+                if (canvasId === 'plot4') plot4Mature = value;
+                if (canvasId === 'plot5') plot5Mature = value;
+                if (canvasId === 'plot6') plot6Mature = value;
+            }
+
+            //Growing Plant Function
+            function growPlot(canvasId, seedNumber) {
+                const animation = {
+                    startedAt: performance.now()
+                };
+                const duration = seedGrowthTimes[seedNumber] * 1000;
+
+                plotGrowthAnimations[canvasId] = animation;
+                plotGrowthSteps[canvasId] = 0;
+                setPlotMature(canvasId, 0);
+                renderAllPlots();
+
+                function animate(currentTime) {
+                    if (plotGrowthAnimations[canvasId] !== animation || plotFilled[canvasId] !== seedNumber) {
+                        return;
+                    }
+
+                    const elapsed = currentTime - animation.startedAt;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const nextStep = Math.min(49, Math.floor(progress * 50));
+
+                    if (nextStep !== plotGrowthSteps[canvasId]) {
+                        plotGrowthSteps[canvasId] = nextStep;
+                        renderAllPlots();
+                    }
+
+                    if (elapsed >= duration) {
+                        setPlotMature(canvasId, 1);
+                        plotGrowthAnimations[canvasId] = null;
+                        renderAllPlots();
+                        return;
+                    }
+
+                    requestAnimationFrame(animate);
+                }
+
+                requestAnimationFrame(animate);
+            }
+
+            //Makes the plot design depending on locked or unlocked.
+            function plotUnlockCheck(canvasId, state, filledValue) {
+                const canvas = document.getElementById(canvasId);
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                if (state === 0) {
+                    ctx.fillStyle = '#808080';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = '48px sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText('🔒', canvas.width / 2, canvas.height / 2);
+                } else if (state === 1) {
+                    ctx.fillStyle = '#69433A';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                    if (filledValue && filledValue !== 0) {
+                        const growthProgress = plotGrowthSteps[canvasId] / 49;
+                        const fontSize = 12 + (60 - 12) * growthProgress;
+                        ctx.font = `${fontSize}px 'Fredoka', sans-serif`;
+                        ctx.fillStyle = '#ffffff';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(filledValue, canvas.width / 2, canvas.height / 2);
+                    }
+                }
+            }
+
+            //Renders the Plots
+            function renderAllPlots() {
+                for (let i = 1; i <= 6; i++) {
+                    const canvasId = `plot${i}`;
+                    plotUnlockCheck(canvasId, plotUnlocked[canvasId], plotFilled[canvasId]);
+                    const harvestButton = document.getElementById(`harvestPlot${i}`);
+                    if (harvestButton) {
+                        const plotMature = [
+                            plot1Mature,
+                            plot2Mature,
+                            plot3Mature,
+                            plot4Mature,
+                            plot5Mature,
+                            plot6Mature
+                        ][i - 1];
+                        const canHarvest = plotUnlocked[canvasId] === 1 &&
+                            plotFilled[canvasId] !== 0 &&
+                            plotMature === 1;
+                        harvestButton.disabled = !canHarvest;
+                        harvestButton.style.backgroundColor = canHarvest
+                            ? '#4caf50'
+                            : 'rgb(214, 237, 228)';
+                    }
+                }
+            }
 
 
 
+            //Initial Set Ups
+            renderAllPlots();
+            updatePriceDisplay();
 
-</script>
+             //Controls the prices.
+            function resetPrices() {
+                seedPrices[1] = Math.floor(Math.random() * 3) + 1;
+                seedPrices[2] = Math.floor(Math.random() * 2) + 5;
+                seedPrices[3] = Math.floor(Math.random() * 3) + 10;
+                seedPrices[4] = Math.floor(Math.random() * 5) + 15;
+                seedPrices[5] = Math.floor(Math.random() * 15) + 35;
+                seedPrices[6] = Math.floor(Math.random() * 25) + 50;
+                updatePriceDisplay();
+            }
+
+
+            //Listener for number keys
+            document.addEventListener('keydown', (event) => {
+                if (['1', '2', '3', '4', '5', '6'].includes(event.key)) {
+                    seedSelected = parseInt(event.key);
+                }
+            });
+
+            //Function that plants seeds.
+            function plantPlot(canvasId) {
+                if (seedSelected === 0) return;
+
+                if (plotUnlocked[canvasId] !== 1 || plotFilled[canvasId] !== 0) return;
+
+                if (seedOwned[seedSelected] <= 0) {
+                    console.log("Not enough seeds to plant!");
+                    return;
+                }
+
+                plotFilled[canvasId] = seedSelected;
+                seedOwned[seedSelected] -= 1;
+                inventoryUpdate();
+                growPlot(canvasId, seedSelected);
+            }
+
+            //Click listeners on canvases.
+            ['plot1', 'plot2', 'plot3', 'plot4', 'plot5', 'plot6'].forEach(id => {
+                const el = document.getElementById(id);
+
+                if (el) {
+                    el.addEventListener('click', () => plantPlot(id));
+                }
+            });
+
+            ['inventory1', 'inventory2', 'inventory3', 'inventory4', 'inventory5', 'inventory6'].forEach((id, index) => {
+                const canvas = document.getElementById(id);
+
+                if (canvas) {
+                    canvas.addEventListener('click', () => {
+                        seedSelected = index + 1;
+                        inventoryUpdate();
+                    });
+                }
+            });
+
+            //Hardcode Seed Select.
+            document.addEventListener('keydown', (event) => { 
+
+                if (event.key === '1') { seedSelected = 1; } 
+                if (event.key === '2') { seedSelected = 2; } 
+                if (event.key === '3') { seedSelected = 3; } 
+                if (event.key === '4') { seedSelected = 4; } 
+                if (event.key === '5') { seedSelected = 5; } 
+                if (event.key === '6') { seedSelected = 6; } 
+
+            });
+            
+            //Updates the inevntory display.
+            function inventoryUpdate() {
+                for (let seedNumber = 1; seedNumber <= 6; seedNumber++) {
+                    const canvas = document.getElementById(`inventory${seedNumber}`);
+                    if (canvas) {
+                        const ctx = canvas.getContext('2d');
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.fillStyle = seedSelected === seedNumber ? '#00FF19' : '#919090';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                        ctx.fillStyle = '#ffffff';
+                        ctx.font = "35px 'Patrick Hand', cursive, sans-serif";
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(seedNumber, canvas.width / 2, canvas.height / 2);
+                        ctx.font = "10px 'Patrick Hand', cursive, sans-serif";
+                        ctx.fillText(`x${seedOwned[seedNumber]}`, canvas.width * 3 / 4, canvas.height - 40);
+                    }
+
+                    const grownCanvas = document.getElementById(`grownInventory${seedNumber}`);
+                    if (grownCanvas) {
+                        const grownCtx = grownCanvas.getContext('2d');
+                        grownCtx.clearRect(0, 0, grownCanvas.width, grownCanvas.height);
+                        grownCtx.fillStyle = '#919090';
+                        grownCtx.fillRect(0, 0, grownCanvas.width, grownCanvas.height);
+
+                        grownCtx.fillStyle = '#ffffff';
+                        grownCtx.font = "35px 'Patrick Hand', cursive, sans-serif";
+                        grownCtx.textAlign = 'center';
+                        grownCtx.textBaseline = 'middle';
+                        grownCtx.fillText(seedNumber, grownCanvas.width / 2, grownCanvas.height / 2);
+                        grownCtx.font = "10px 'Patrick Hand', cursive, sans-serif";
+                        grownCtx.fillText(`x${grownItems[seedNumber]}`, grownCanvas.width * 3 / 4, grownCanvas.height - 40);
+                    }
+                }
+            }
+
+            //Clears the plot.
+            function clearPlot(canvasId) {
+                const seedNumber = plotFilled[canvasId];
+                const plotMaturity = {
+                    plot1: plot1Mature,
+                    plot2: plot2Mature,
+                    plot3: plot3Mature,
+                    plot4: plot4Mature,
+                    plot5: plot5Mature,
+                    plot6: plot6Mature
+                };
+
+                if (!seedNumber || plotMaturity[canvasId] !== 1) return false;
+
+                grownItems[seedNumber] += 1;
+                plotFilled[canvasId] = 0;
+                plotGrowthAnimations[canvasId] = null;
+                plotGrowthSteps[canvasId] = 0;
+                setPlotMature(canvasId, 0);
+                renderAllPlots();
+                return true;
+            }
+
+            //Harvest Functions.
+            function harvest1() {
+                clearPlot('plot1');
+            }
+
+            function harvest2() {
+                clearPlot('plot2');
+            }
+
+            function harvest3() {
+                clearPlot('plot3');
+            }
+
+            function harvest4() {
+                clearPlot('plot4');
+            }
+
+            function harvest5() {
+                clearPlot('plot5');
+            }
+
+            function harvest6() {
+                clearPlot('plot6');
+            }
+
+
+        </script>
+        <script>
+            //Interval Updates
+
+            setInterval(resetPrices, 3000);
+            setInterval(renderAllPlots, 1000);
+            setInterval(updatePriceDisplay, 500);
+            setInterval(inventoryUpdate, 100);
+            
+        </script>
+    </body>
+</html>
